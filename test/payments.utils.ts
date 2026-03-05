@@ -1,8 +1,8 @@
 import * as t from 'assert';
-import * as BNETWORKS from 'bitcoinjs-lib/src/networks';
-import * as bscript from 'bitcoinjs-lib/src/script';
+import * as BNETWORKS from 'wojakcoinjs-lib/src/networks';
+import * as bscript from 'wojakcoinjs-lib/src/script';
 import * as tools from 'uint8array-tools';
-import { isTaptree } from 'bitcoinjs-lib/src/types';
+import { isTaptree } from 'wojakcoinjs-lib/src/types';
 
 function tryHex(x: Uint8Array | Uint8Array[]): string | string[] {
   if (x instanceof Uint8Array) return tools.toHex(x);
@@ -130,6 +130,14 @@ export function preform(x: any): any {
   x = Object.assign({}, x);
 
   if (x.network) x.network = (BNETWORKS as any)[x.network];
+  // Fixtures use Bitcoin addresses; when no network set, use bitcoin so tests pass (lib default is Wojakcoin)
+  if (
+    !x.network &&
+    typeof x.address === 'string' &&
+    /^(1|3|bc1|tb1|bcrt1|m|n|2)[a-zA-HJ-NP-Z0-9]/i.test(x.address)
+  ) {
+    x.network = (BNETWORKS as any).bitcoin;
+  }
   if (typeof x.inputHex === 'string') {
     x.input = Buffer.from(x.inputHex, 'hex');
     delete x.inputHex;

@@ -1,9 +1,7 @@
 /**
- * bitcoin address decode and encode tools, include base58、bech32 and output script
- *
- * networks support bitcoin、bitcoin testnet and bitcoin regtest
- *
- * addresses support P2PKH、P2SH、P2WPKH、P2WSH、P2TR and so on
+ * Wojakcoin address decode/encode: base58, bech32, and output script.
+ * Default network is Wojakcoin mainnet.
+ * Supports P2PKH, P2SH, P2WPKH, P2WSH, P2TR, etc.
  *
  * @packageDocumentation
  */

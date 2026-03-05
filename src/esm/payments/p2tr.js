@@ -1,4 +1,4 @@
-import { bitcoin as BITCOIN_NETWORK } from '../networks.js';
+import { wojakcoin as DEFAULT_NETWORK } from '../networks.js';
 import * as bscript from '../script.js';
 import {
   isTaptree,
@@ -89,7 +89,7 @@ export function p2tr(a, opts) {
     if (a.hash) return { hash: a.hash };
     return;
   });
-  const network = a.network || BITCOIN_NETWORK;
+  const network = a.network || DEFAULT_NETWORK;
   const o = { name: 'p2tr', network };
   lazy.prop(o, 'address', () => {
     if (!o.pubkey) return;

@@ -1,5 +1,5 @@
 import { sha256 } from '@noble/hashes/sha256';
-import { bitcoin as BITCOIN_NETWORK } from '../networks.js';
+import { wojakcoin as DEFAULT_NETWORK } from '../networks.js';
 import * as bscript from '../script.js';
 import {
   Buffer256bitSchema,
@@ -84,7 +84,7 @@ export function p2wsh(a: Payment, opts?: PaymentOpts): Payment {
 
   let network = a.network;
   if (!network) {
-    network = (a.redeem && a.redeem.network) || BITCOIN_NETWORK;
+    network = (a.redeem && a.redeem.network) || DEFAULT_NETWORK;
   }
 
   const o: Payment = { network };

@@ -1,10 +1,10 @@
 /**
- * This module defines the network configurations for Bitcoin and its variants, including message prefixes,
- * Bech32 address format, BIP32 key derivation prefixes, and other address-related configurations.
- * It supports Bitcoin, Bitcoin testnet, Bitcoin regtest, Wojakcoin mainnet, and Wojakcoin testnet networks.
+ * Network configurations for Wojakcoin (WJK) and compatibility networks.
+ * This library is for Wojakcoin; all defaults use Wojakcoin mainnet.
+ * Message prefixes, Bech32, BIP32, and address prefixes follow chainparams.
  *
- * Additional information on address prefixes can be found here:
- * - https://en.bitcoin.it/wiki/List_of_address_prefixes
+ * Primary: wojakcoin, wojakcoinTestnet.
+ * Also exported for compatibility: bitcoin, testnet, regtest.
  *
  * @packageDocumentation
  */
@@ -21,19 +21,7 @@ interface Bip32 {
     private: number;
 }
 /**
- * Represents the Bitcoin network configuration.
- */
-export declare const bitcoin: Network;
-/**
- * Represents the regtest network configuration.
- */
-export declare const regtest: Network;
-/**
- * Represents the testnet network configuration.
- */
-export declare const testnet: Network;
-/**
- * Wojakcoin (WJK) mainnet. Addresses start with 'W'.
+ * Wojakcoin (WJK) mainnet. Default network for this library. Addresses start with 'W'.
  * From wojakcore chainparams.cpp
  */
 export declare const wojakcoin: Network;
@@ -41,4 +29,10 @@ export declare const wojakcoin: Network;
  * Wojakcoin testnet.
  */
 export declare const wojakcoinTestnet: Network;
+/** Bitcoin mainnet (compatibility). */
+export declare const bitcoin: Network;
+/** Regtest (compatibility). */
+export declare const regtest: Network;
+/** Bitcoin testnet (compatibility). */
+export declare const testnet: Network;
 export {};

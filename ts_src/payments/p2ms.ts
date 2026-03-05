@@ -1,4 +1,4 @@
-import { bitcoin as BITCOIN_NETWORK } from '../networks.js';
+import { wojakcoin as DEFAULT_NETWORK } from '../networks.js';
 import * as bscript from '../script.js';
 import * as scriptNumber from '../script_number.js';
 import { BufferSchema, isPoint, stacksEqual } from '../types.js';
@@ -73,7 +73,7 @@ export function p2ms(a: Payment, opts?: PaymentOpts): Payment {
     a,
   );
 
-  const network = a.network || BITCOIN_NETWORK;
+  const network = a.network || DEFAULT_NETWORK;
   const o: Payment = { network };
 
   let chunks: Stack = [];

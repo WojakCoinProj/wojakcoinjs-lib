@@ -1,5 +1,5 @@
 import * as bcrypto from '../crypto.js';
-import { bitcoin as BITCOIN_NETWORK } from '../networks.js';
+import { wojakcoin as DEFAULT_NETWORK } from '../networks.js';
 import * as bscript from '../script.js';
 import { BufferSchema, NBufferSchemaFactory, stacksEqual } from '../types.js';
 import * as lazy from './lazy.js';
@@ -45,7 +45,7 @@ export function p2sh(a, opts) {
   );
   let network = a.network;
   if (!network) {
-    network = (a.redeem && a.redeem.network) || BITCOIN_NETWORK;
+    network = (a.redeem && a.redeem.network) || DEFAULT_NETWORK;
   }
   const o = { network };
   const _address = lazy.value(() => {

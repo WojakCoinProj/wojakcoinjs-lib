@@ -3,7 +3,7 @@ import * as varuint from 'varuint-bitcoin';
 import { checkForInput, checkForOutput } from 'bip174';
 import { fromOutputScript, toOutputScript } from './address.js';
 import { cloneBuffer, reverseBuffer } from './bufferutils.js';
-import { bitcoin as btcNetwork } from './networks.js';
+import { wojakcoin as defaultNetwork } from './networks.js';
 import * as payments from './payments/index.js';
 import { tapleafHash } from './payments/bip341.js';
 import * as bscript from './script.js';
@@ -39,7 +39,7 @@ const DEFAULT_OPTS = {
    * A bitcoinjs Network object. This is only used if you pass an `address`
    * parameter to addOutput. Otherwise it is not needed and can be left default.
    */
-  network: btcNetwork,
+  network: defaultNetwork,
   /**
    * When extractTransaction is called, the fee rate is checked.
    * THIS IS NOT TO BE RELIED ON.

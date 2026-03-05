@@ -95,7 +95,7 @@ function p2wpkh(a, opts) {
       data: Uint8Array.from(data),
     };
   });
-  const network = a.network || networks_js_1.bitcoin;
+  const network = a.network || networks_js_1.wojakcoin;
   const o = { name: 'p2wpkh', network };
   lazy.prop(o, 'address', () => {
     if (!o.hash) return;

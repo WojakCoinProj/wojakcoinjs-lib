@@ -1,7 +1,7 @@
 {
   "name": "wojakcoinjs-lib",
   "version": "1.0.0",
-  "description": "JavaScript library for Wojakcoin (WJK). Fork of bitcoinjs-lib for Wojakcoin network.",
+  "description": "Fully Wojakcoin (WJK) JavaScript library. All defaults use Wojakcoin mainnet. Fork of bitcoinjs-lib.",
   "type": "module",
   "main": "./src/cjs/index.cjs",
   "module": "./src/esm/index.js",

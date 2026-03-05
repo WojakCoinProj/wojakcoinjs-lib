@@ -72,7 +72,7 @@ function p2data(a, opts) {
     ),
     a,
   );
-  const network = a.network || networks_js_1.bitcoin;
+  const network = a.network || networks_js_1.wojakcoin;
   const o = { name: 'embed', network };
   lazy.prop(o, 'output', () => {
     if (!a.data) return;

@@ -1,4 +1,4 @@
-import { bitcoin as BITCOIN_NETWORK } from '../networks.js';
+import { wojakcoin as DEFAULT_NETWORK } from '../networks.js';
 import * as bscript from '../script.js';
 import { BufferSchema, isPoint } from '../types.js';
 import { Payment, PaymentOpts, StackFunction } from './index.js';
@@ -46,7 +46,7 @@ export function p2pk(a: Payment, opts?: PaymentOpts): Payment {
     return bscript.decompile(a.input!);
   }) as StackFunction;
 
-  const network = a.network || BITCOIN_NETWORK;
+  const network = a.network || DEFAULT_NETWORK;
   const o: Payment = { name: 'p2pk', network };
 
   lazy.prop(o, 'output', () => {

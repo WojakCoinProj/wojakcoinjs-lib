@@ -1,4 +1,4 @@
-import { bitcoin as BITCOIN_NETWORK } from '../networks.js';
+import { wojakcoin as DEFAULT_NETWORK } from '../networks.js';
 import * as bscript from '../script.js';
 import { stacksEqual, BufferSchema } from '../types.js';
 import { Payment, PaymentOpts, Stack } from './index.js';
@@ -30,7 +30,7 @@ export function p2data(a: Payment, opts?: PaymentOpts): Payment {
     a,
   );
 
-  const network = a.network || BITCOIN_NETWORK;
+  const network = a.network || DEFAULT_NETWORK;
   const o = { name: 'embed', network } as Payment;
 
   lazy.prop(o, 'output', () => {

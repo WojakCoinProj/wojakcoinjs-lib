@@ -126,7 +126,7 @@ function p2tr(a, opts) {
     if (a.hash) return { hash: a.hash };
     return;
   });
-  const network = a.network || networks_js_1.bitcoin;
+  const network = a.network || networks_js_1.wojakcoin;
   const o = { name: 'p2tr', network };
   lazy.prop(o, 'address', () => {
     if (!o.pubkey) return;

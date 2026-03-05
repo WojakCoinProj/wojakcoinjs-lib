@@ -1,69 +1,65 @@
 # wojakcoinjs-lib
 
-A JavaScript library for [Wojakcoin (WJK)](https://wojakcoin.cash). Fork of [bitcoinjs-lib](https://github.com/bitcoinjs/bitcoinjs-lib) with Wojakcoin network support.
+**Fully Wojakcoin (WJK).** A JavaScript library for [Wojakcoin](https://wojakcoin.cash). All defaults use Wojakcoin mainnet: addresses, payments, PSBTs, and scripts.
 
-Released under the terms of the [MIT LICENSE](LICENSE).
+Fork of [bitcoinjs-lib](https://github.com/bitcoinjs/bitcoinjs-lib). Released under [MIT](LICENSE).
 
 ## Networks
 
-- **wojakcoin** – Wojakcoin mainnet (addresses start with `W`, default when no network is passed)
-- **wojakcoinTestnet** – Wojakcoin testnet
-- **bitcoin**, **testnet**, **regtest** – Original Bitcoin networks (still available)
+- **wojakcoin** – Wojakcoin mainnet (default everywhere; addresses start with `W`)
+- **wojakcoinTestnet** – Wojakcoin testnet  
+- **bitcoin**, **testnet**, **regtest** – Available for compatibility only
 
-Network parameters match [wojakcore](https://github.com/wojakcoin/wojakcore) `chainparams.cpp`:
-- Mainnet: pubKeyHash `0x49`, scriptHash `0x05`, WIF `0xc9`
-- BIP32: same as Bitcoin (`0x0488b21e` / `0x0488ade4`)
+Params match [wojakcore](https://github.com/wojakcoin/wojakcore) `chainparams.cpp`: mainnet pubKeyHash `0x49`, scriptHash `0x05`, WIF `0xc9`.
 
-## Installation
+## Install
 
 ```bash
 npm install wojakcoinjs-lib
-# optionally, for key derivation and signing
-npm install ecpair bip32
+npm install ecpair bip32   # optional: keys and HD
 ```
 
 ## Usage
 
+Default network is always Wojakcoin mainnet when omitted.
+
 ```javascript
-const wojakcoin = require('wojakcoinjs-lib');
-// or: import * as wojakcoin from 'wojakcoinjs-lib';
+const wjk = require('wojakcoinjs-lib');
 
-const { address, payments, networks } = wojakcoin;
+// Addresses default to Wojakcoin
+const script = wjk.address.toOutputScript('W...');
 
-// Default network is Wojakcoin mainnet for address module
-const script = address.toOutputScript('W...'); // decodes and uses Wojakcoin mainnet
+// Payments and PSBTs default to Wojakcoin
+const { address } = wjk.payments.p2pkh({ pubkey: keyPair.publicKey });
+const psbt = new wjk.Psbt();
 ```
 
-With ECPair and BIP32 (install `ecpair` and `bip32`):
+With keys (ecpair + bip32):
 
 ```javascript
-const wojakcoin = require('wojakcoinjs-lib');
+const wjk = require('wojakcoinjs-lib');
 const { ECPairFactory } = require('ecpair');
 const ecc = require('tiny-secp256k1');
 const ECPair = ECPairFactory(ecc);
 
-const keyPair = ECPair.makeRandom({ network: wojakcoin.networks.wojakcoin });
-const { address } = wojakcoin.payments.p2pkh({
+const keyPair = ECPair.makeRandom({ network: wjk.networks.wojakcoin });
+const { address } = wjk.payments.p2pkh({
   pubkey: keyPair.publicKey,
-  network: wojakcoin.networks.wojakcoin,
+  network: wjk.networks.wojakcoin,
 });
 ```
 
 ## API
 
-Same as bitcoinjs-lib. Export includes:
-
-- `address` – address encoding/decoding, output scripts
-- `payments` – P2PKH, P2SH, P2WPKH, P2WSH, P2TR, etc.
-- `networks` – `wojakcoin`, `wojakcoinTestnet`, `bitcoin`, `testnet`, `regtest`
-- `Transaction`, `Psbt`, `script`, `crypto`, etc.
-
-When a function accepts an optional `network` and none is passed, **Wojakcoin mainnet** is used (unlike bitcoinjs-lib which defaults to Bitcoin).
+- **address** – encode/decode, output scripts (default: Wojakcoin)
+- **payments** – P2PKH, P2SH, P2WPKH, P2WSH, P2TR (default: Wojakcoin)
+- **networks** – `wojakcoin`, `wojakcoinTestnet`, plus `bitcoin`, `testnet`, `regtest`
+- **Transaction**, **Psbt**, **script**, **crypto** – same as bitcoinjs-lib; PSBT default network is Wojakcoin
 
 ## Credits
 
-- [bitcoinjs-lib](https://github.com/bitcoinjs/bitcoinjs-lib) – original library (MIT)
-- [Wojakcoin](https://wojakcoin.cash) – community and chain params
+- [bitcoinjs-lib](https://github.com/bitcoinjs/bitcoinjs-lib) (MIT)
+- [Wojakcoin](https://wojakcoin.cash)
 
 ## LICENSE
 

@@ -1,5 +1,5 @@
 import * as bcrypto from '../crypto.js';
-import { bitcoin as BITCOIN_NETWORK } from '../networks.js';
+import { wojakcoin as DEFAULT_NETWORK } from '../networks.js';
 import * as bscript from '../script.js';
 import { BufferSchema, isPoint, NBufferSchemaFactory } from '../types.js';
 import { Payment, PaymentOpts } from './index.js';
@@ -60,7 +60,7 @@ export function p2wpkh(a: Payment, opts?: PaymentOpts): Payment {
     };
   });
 
-  const network = a.network || BITCOIN_NETWORK;
+  const network = a.network || DEFAULT_NETWORK;
   const o: Payment = { name: 'p2wpkh', network };
 
   lazy.prop(o, 'address', () => {

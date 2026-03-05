@@ -6,10 +6,13 @@ import ECPairFactory from 'ecpair';
 import { describe, it } from 'mocha';
 
 import { convertScriptTree } from './payments.utils.js';
-import { LEAF_VERSION_TAPSCRIPT } from 'bitcoinjs-lib/src/payments/bip341';
-import { tapTreeToList, tapTreeFromList } from 'bitcoinjs-lib/src/psbt/bip371';
-import type { Taptree } from 'bitcoinjs-lib/src/types';
-import { initEccLib } from 'bitcoinjs-lib';
+import { LEAF_VERSION_TAPSCRIPT } from 'wojakcoinjs-lib/src/payments/bip341';
+import {
+  tapTreeToList,
+  tapTreeFromList,
+} from 'wojakcoinjs-lib/src/psbt/bip371';
+import type { Taptree } from 'wojakcoinjs-lib/src/types';
+import { initEccLib } from 'wojakcoinjs-lib';
 import * as tools from 'uint8array-tools';
 
 const rng = (size: number) => crypto.randomBytes(size);
@@ -23,7 +26,7 @@ import {
   payments,
   Signer,
   SignerAsync,
-} from 'bitcoinjs-lib';
+} from 'wojakcoinjs-lib';
 
 import preFixtures from './fixtures/psbt.json';
 import taprootFixtures from './fixtures/p2tr.json';
@@ -650,7 +653,10 @@ describe(`Psbt`, () => {
     fixtures.addOutput.checks.forEach(f => {
       it(f.description, () => {
         if (f.isTaproot) initEccLib(ecc);
-        const psbt = f.psbt ? Psbt.fromBase64(f.psbt) : new Psbt();
+        const opts = { network: NETWORKS.bitcoin };
+        const psbt = f.psbt
+          ? Psbt.fromBase64(f.psbt, opts)
+          : new Psbt(opts);
 
         if (f.exception) {
           assert.throws(() => {
@@ -1215,8 +1221,9 @@ describe(`Psbt`, () => {
   describe('create 1-to-1 transaction', () => {
     const alice = ECPair.fromWIF(
       'L2uPYXe17xSTqbCjZvL2DsyXPCbXspvcu5mHLDYUgzdUbZGSKrSr',
+      NETWORKS.bitcoin,
     );
-    const psbt = new Psbt();
+    const psbt = new Psbt({ network: NETWORKS.bitcoin });
     psbt.addInput({
       hash: '7d067b4a697a09d2c3cff7d4d9506c9955e93bff41bf82d439da7d030382bc3e',
       index: 0,
@@ -1362,7 +1369,7 @@ describe(`Psbt`, () => {
     });
 
     it('.txOutputs is exposed as a readonly clone', () => {
-      const psbt = new Psbt();
+      const psbt = new Psbt({ network: NETWORKS.bitcoin });
       const address = '1LukeQU5jwebXbMLDVydeH4vFSobRV9rkj';
       const value = 100000n;
       psbt.addOutput({ address, value });

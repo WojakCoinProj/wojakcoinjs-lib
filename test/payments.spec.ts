@@ -1,10 +1,10 @@
 import * as assert from 'assert';
 import * as ecc from 'tiny-secp256k1';
 import { describe, it, before, beforeEach } from 'mocha';
-import { PaymentCreator } from 'bitcoinjs-lib';
+import { PaymentCreator } from 'wojakcoinjs-lib';
 import * as u from './payments.utils.js';
-import { initEccLib } from 'bitcoinjs-lib';
-import { payments } from 'bitcoinjs-lib';
+import { initEccLib, networks } from 'wojakcoinjs-lib';
+import { payments } from 'wojakcoinjs-lib';
 const {
   embed: p2data,
   p2ms,
@@ -79,15 +79,36 @@ testSuite.forEach(p => {
     });
 
     p.fixtures.valid.forEach((f: any) => {
+      const useBitcoin =
+        f.expected?.address &&
+        /^(1|3|bc1|tb1|bcrt1|m|n|2)[a-zA-HJ-NP-Z0-9]/i.test(
+          f.expected.address,
+        );
+      const formArgs = (a: any) => {
+        if (!useBitcoin) return u.preform(a);
+        const derived = a?.redeem?.network || f.expected?.network;
+        return u.preform({
+          ...(a || {}),
+          network: derived || a?.network || 'bitcoin',
+          ...(a?.redeem
+            ? {
+                redeem: {
+                  ...a.redeem,
+                  network: a.redeem.network || 'bitcoin',
+                },
+              }
+            : {}),
+        });
+      };
       it(f.description + ' as expected', () => {
-        const args = u.preform(f.arguments);
+        const args = formArgs(f.arguments);
         const actual = p.payment(args, f.options);
 
         u.equate(actual, f.expected, f.arguments);
       });
 
       it(f.description + ' as expected (no validation)', () => {
-        const args = u.preform(f.arguments);
+        const args = formArgs(f.arguments);
         const actual = p.payment(
           args,
           Object.assign({}, f.options, {
@@ -104,6 +125,14 @@ testSuite.forEach(p => {
         'throws ' + f.exception + (f.description ? 'for ' + f.description : ''),
         () => {
           const args = u.preform(f.arguments);
+          // Use Bitcoin network for bc1/tb1/bcrt1 addresses so expected error matches (default is Wojakcoin)
+          if (
+            !args.network &&
+            typeof args.address === 'string' &&
+            /^bc1|^tb1|^bcrt1/i.test(args.address)
+          ) {
+            args.network = networks.bitcoin;
+          }
           assert.throws(() => {
             p.payment(args, f.options);
           }, new RegExp(f.exception));
@@ -114,8 +143,11 @@ testSuite.forEach(p => {
     if (p.paymentName === 'p2sh') {
       it('properly assembles nested p2wsh with names', () => {
         const actual = p.payment({
+          network: networks.bitcoin,
           redeem: p2wsh({
+            network: networks.bitcoin,
             redeem: p2pk({
+              network: networks.bitcoin,
               pubkey: Buffer.from(
                 '03e15819590382a9dd878f01e2f0cbce541564eb415e43b440472d883ecd283058',
                 'hex',
@@ -157,6 +189,17 @@ testSuite.forEach(p => {
             u.from(d, detail, args);
           });
           const expected = u.from(key, detail);
+          // Fixtures are Bitcoin; ensure network set when detail has Bitcoin-style address
+          const addr =
+            (expected && (expected as any).address) ||
+            (detail && (detail as any).address);
+          if (
+            !(args as any).network &&
+            typeof addr === 'string' &&
+            /^(1|3|bc1|tb1|bcrt1|m|n|2)[a-zA-HJ-NP-Z0-9]/i.test(addr)
+          ) {
+            (args as any).network = networks.bitcoin;
+          }
 
           it(
             f.description +

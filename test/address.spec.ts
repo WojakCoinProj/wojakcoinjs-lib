@@ -1,13 +1,13 @@
 import * as assert from 'assert';
 import { describe, it } from 'mocha';
 import * as ecc from 'tiny-secp256k1';
-import { address as baddress } from 'bitcoinjs-lib';
-import { script as bscript } from 'bitcoinjs-lib';
+import { address as baddress } from 'wojakcoinjs-lib';
+import { script as bscript } from 'wojakcoinjs-lib';
 import fixtures from './fixtures/address.json';
 import * as tools from 'uint8array-tools';
-import { networks } from 'bitcoinjs-lib';
+import { networks } from 'wojakcoinjs-lib';
 
-import { initEccLib } from 'bitcoinjs-lib';
+import { initEccLib } from 'wojakcoinjs-lib';
 
 const NETWORKS: Record<string, networks.Network> = {
   ...networks,
@@ -148,8 +148,12 @@ describe('address', () => {
     fixtures.invalid.toOutputScript.forEach(f => {
       it('throws when ' + (f.exception || f.paymentException), () => {
         const exception = f.paymentException || `${f.address} ${f.exception}`;
+        // Use bitcoin network for bc1/tb/bcrt addresses when no network so expected error matches (default is wojakcoin)
+        const network =
+          (f.network as any) ||
+          (/^bc1|^tb1|^bcrt1/i.test(f.address) ? NETWORKS.bitcoin : undefined);
         assert.throws(() => {
-          baddress.toOutputScript(f.address, f.network as any);
+          baddress.toOutputScript(f.address, network);
         }, new RegExp(exception));
       });
     });
