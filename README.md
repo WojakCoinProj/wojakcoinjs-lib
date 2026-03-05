@@ -1,6 +1,6 @@
 # wojakcoinjs-lib
 
-**Fully Wojakcoin (WJK).** A JavaScript library for [Wojakcoin](https://wojakcoin.cash). All defaults use Wojakcoin mainnet: addresses, payments, PSBTs, and scripts.
+*Wojakcoin (WJK).** A JavaScript library for [Wojakcoin](https://wojakcoin.cash). All defaults use Wojakcoin mainnet: addresses, payments, PSBTs, and scripts.
 
 Fork of [bitcoinjs-lib](https://github.com/bitcoinjs/bitcoinjs-lib). Released under [MIT](LICENSE).
 
